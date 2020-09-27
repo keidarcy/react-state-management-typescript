@@ -1,31 +1,36 @@
-import React, { createContext, useReducer } from 'react'
+import React, { createContext, useReducer } from 'react';
 import {
   productReducer,
   shoppingCartReducer,
   ProductActions,
   ShoppingCartActions
-} from './reducers'
+} from './reducers';
 
 type ProductType = {
-  id: number
-  name: string
-  price: number
-}
+  id: number;
+  name: string;
+  price: number;
+};
 
 type InitialStateType = {
-  products: ProductType[]
-  shoppingCart: number
-}
+  products: ProductType[];
+  shoppingCart: number;
+};
 
 const initialState = {
-  products: [],
+  products: [
+    { id: 1, name: 'adidas', price: 100 },
+    { id: 2, name: 'nike', price: 200 },
+    { id: 3, name: 'visa', price: 300 },
+    { id: 4, name: 'master', price: 400 }
+  ],
   shoppingCart: 0
-}
+};
 
 const AppContext = createContext<{
-  state: InitialStateType
-  dispatch: React.Dispatch<ProductActions | ShoppingCartActions>
-}>({ state: initialState, dispatch: () => null })
+  state: InitialStateType;
+  dispatch: React.Dispatch<ProductActions | ShoppingCartActions>;
+}>({ state: initialState, dispatch: () => null });
 
 const mainReducer = (
   { products, shoppingCart }: InitialStateType,
@@ -33,15 +38,13 @@ const mainReducer = (
 ) => ({
   products: productReducer(products, action),
   shoppingCart: shoppingCartReducer(shoppingCart, action)
-})
+});
 
 const AppProvider: React.FC = ({ children }) => {
-  const [state, dispatch] = useReducer(mainReducer, initialState)
+  const [state, dispatch] = useReducer(mainReducer, initialState);
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
-      {children}
-    </AppContext.Provider>
-  )
-}
+    <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>
+  );
+};
 
-export { AppContext, AppProvider }
+export { AppContext, AppProvider };
